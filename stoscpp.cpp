@@ -10,13 +10,30 @@ struct element {
 
 void init(element* top);
 void push(int number, element** top);
-bool empty(element* top);
+int top(element* top);
+int empty(element* top);
+int pop(element* top, int& size);
 
 int main() {
 	element* top1 = NULL;
+	int size1 = 0;
+
 	init(top1);
+	std::cout << top(top1) << std::endl;
 	push(10, &top1);
-	std::cout << empty(top1);
+	std::cout << top(top1) << std::endl;
+	push(20, &top1);
+	std::cout << top(top1) << std::endl;
+	push(230, &top1);
+	std::cout << top(top1) << std::endl;
+	push(210, &top1);
+	std::cout << top(top1) << std::endl;
+	std::cout << pop(top1, size1) << std::endl;
+	std::cout << pop(top1, size1) << std::endl;
+	std::cout << pop(top1, size1) << std::endl;
+	std::cout << empty(top1) << std::endl;
+	std::cout << top(top1) << std::endl;
+
 	return 0;
 }
 
@@ -40,6 +57,30 @@ void push(int number, element** top) {
 	*top = new_element;
 }
 //zwraca 1 jesli stos je pusty i 0 w przeciwnym wypadku
-bool empty(element* top) {
-	return (top == NULL) ? true : false;
+int empty(element* top) {
+	return top == NULL;
+}
+
+/*Wyswietla liczbe na gorze stosu*/
+int top(element* top) {
+	return empty(top) ? -1 : top->number;
+}
+
+/// <summary>
+/// Usuwa element z gory stosu
+/// </summary>
+/// <param name="top">wskaznik na gore stosu</param>
+/// <param name="size">aktualny rozmiar stosu</param>
+/// <returns>Usuniety element lub -1 dla pustej listy</returns>
+int pop(element *top, int &size) {
+	if (top == NULL) {
+		return -1;
+	}
+	else {
+		element* temp = top;
+		int deleted = top->number;
+		top = top->next;
+		temp->next = NULL;
+		return deleted;
+	}
 }
