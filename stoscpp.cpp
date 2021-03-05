@@ -1,6 +1,10 @@
 ﻿// Implementacja stosu na listach
 #include <iostream>
+#include <stdlib.h> // srand, rand
+#include <time.h> //bardziej losowe liczby
+
 #define MAX_SIZE 5 //maksymalny rozmiar stosu
+
 
 //struktura przechowujaca liczbe i adres nastepnej liczby
 struct element {
@@ -19,21 +23,33 @@ int full(element* top, int size);
 int main() {
 	element* top1 = NULL;
 	int size1 = 0;
+	
+	init(top1); //inicjalizacja stosu
 
-	init(top1);
+	int i = 0, ilosc_liczb, liczba;
+	srand(time(NULL));
+	/*biore ilosc liczb z zakresu 1-10, beda one czasami wieksze od MAX_SIZE, a czasami mniejsze*/
+	ilosc_liczb = rand() % 10 + 1; 
+	
+	//cout pomagajacy testowac kod
+	std::cout << "Tyle Wylosowalo: " << ilosc_liczb << std::endl;
+	std::cout << "Taki jest limit stosu: " << MAX_SIZE << std::endl;
 
-	std::cout << top(top1) << std::endl;
-	std::cout << push(1, &top1, size1) << std::endl;
-	std::cout << push(2, &top1, size1) << std::endl;
-	std::cout << push(2, &top1, size1) << std::endl;
-	std::cout << push(2, &top1, size1) << std::endl;
-	std::cout << push(2, &top1, size1) << std::endl;
-	std::cout << push(2, &top1, size1) << std::endl;
-	std::cout << top(top1) << std::endl;
-	std::cout << destroy(&top1, size1) << std::endl;
-	std::cout << top(top1) << std::endl;
-	std::cout << push(6, &top1, size1) << std::endl;
-	std::cout << top(top1) << std::endl;
+	//wrzucania na stos
+	while (i <= ilosc_liczb) {
+		liczba = rand() % 100 +1;
+		push(liczba, &top1, size1);
+		i++;
+	}
+
+	//wypisywanie
+	while (top1->next != NULL) {
+		std::cout << top1->number << std::endl;
+		top1 = top1->next;
+	}
+
+	//usuwanie stosu bo tak
+	destroy(&top1, size1);
 
 	return 0;
 }
@@ -72,7 +88,7 @@ int top(element* top) {
 
 /*Zwraca 1 gdy rozmiar stosu jest wiekszy badz rowny MAX SIZE*/
 int full(element* top, int size) {
-	return size >= MAX_SIZE;
+	return size > MAX_SIZE;
 }
 
 /*Usuwa element z gory stosu i zwraca 0 jesli sie udalo lub 0 gdy stos jest pusty*/
